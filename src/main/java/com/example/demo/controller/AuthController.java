@@ -22,10 +22,12 @@ public class AuthController {
     @PostMapping("/register")
 public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest req) {
 
-    if (req.getRole() == Role.ADMIN) {
+        System.out.println("Gelen rol: " + req.getRole());
+    
+   /* if (req.getRole() == Role.ADMIN) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(new AuthResponse("Admin olarak kayıt olunamaz"));
-    }
+    } */
 
     var u = User.builder()
             .username(req.getUsername())

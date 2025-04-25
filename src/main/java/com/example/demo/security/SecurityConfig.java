@@ -45,21 +45,23 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authz -> authz
+.authorizeHttpRequests(authz -> authz
     .requestMatchers("/auth/**", "/h2-console/**").permitAll()
 
-    
+    // GET: Tüm roller
     .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("USER", "TRAINER", "ADMIN")
 
-    
+    // POST: Sadece TRAINER ve ADMIN
     .requestMatchers(HttpMethod.POST, "/api/**").hasAnyRole("TRAINER", "ADMIN")
 
-    
-    .requestMatchers("/api/**").hasRole("ADMIN")
+    // PUT ve DELETE: Sadece ADMIN
+    .requestMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
+    .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
 
-    // diğer her şeyi engelle
+    // Diğer her şey engellensin
     .anyRequest().authenticated()
 )
+
                 .authenticationManager(authManager)
                 .addFilter(authFilter)
                 .addFilterAfter(authorizationFilter, JwtAuthenticationFilter.class)
